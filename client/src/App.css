@@ -1,0 +1,13 @@
+@media (max-width: 508px) {
+    .btn-font {
+        font-size: 10px !important;
+    }
+
+    .time-filter-section {
+        width: 100% !important;
+    }
+}
+
+.time-filter-section {
+    width: 50%;
+}

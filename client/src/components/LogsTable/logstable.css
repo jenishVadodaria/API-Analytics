@@ -1,0 +1,113 @@
+.table {
+    border-collapse: initial;
+    border-spacing: 0 0.5rem;
+    width: 100%;
+}
+
+.logs-data {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+#logsTable table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+}
+
+#logsTable tr th {
+    color: #350e5f;
+    opacity: 50%;
+    border: none;
+    font-weight: 500;
+    font-size: 1.3rem;
+}
+
+#logsTable tr td {
+    color: #350e5f;
+    background-color: #ffff;
+    vertical-align: middle;
+    font-size: 1rem;
+}
+
+#logsTable tr td:nth-child(1) {
+    border-radius: 0.75rem 0 0 0.75rem;
+}
+
+#logsTable tr td:last-child {
+    border-radius: 0 0.75rem 0.75rem 0;
+}
+
+#logsTable tbody tr {
+    border: transparent;
+    background-color: transparent;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+    border-radius: 0.75rem;
+}
+
+@media (max-width: 590px) {
+
+    #logsTable table,
+    #logsTable thead,
+    #logsTable tbody,
+    #logsTable th,
+    #logsTable td,
+    #logsTable tr {
+        display: block;
+    }
+
+    #logsTable thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    #logsTable tr {
+        border: 1px solid #ccc;
+    }
+
+    #logsTable td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        margin-bottom: 12px;
+    }
+
+    #logsTable td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+    #logsTable td:nth-of-type(1):before {
+        content: "#";
+    }
+
+    #logsTable td:nth-of-type(2):before {
+        content: "User ID";
+    }
+
+    #logsTable td:nth-of-type(3):before {
+        content: "Timestamp";
+    }
+
+    #logsTable td:nth-of-type(4):before {
+        content: "Status";
+    }
+
+    #logsTable td:nth-of-type(5):before {
+        content: "Error message";
+    }
+
+    #logsTable td:nth-of-type(6):before {
+        content: "Request";
+    }
+
+    #logsTable td:nth-of-type(7):before {
+        content: "Response";
+    }
+}
