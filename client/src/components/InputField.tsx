@@ -43,7 +43,7 @@ const InputField = () => {
         onClick={handleButtonClick}
         style={{ flex: "0 0 auto" }}
       >
-        Hit Api
+        Submit
       </button>
     </div>
   );

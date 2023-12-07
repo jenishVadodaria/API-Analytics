@@ -18,16 +18,31 @@ const TimeFilter = ({ onTimeFilterChange }: any) => {
     }
   };
 
-  const handleCustomRange = (date: Date) => {
-    setEndDate(date);
-    onTimeFilterChange(
-      `custom&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
-    );
+  const handleCustomRange = (date: Date, type: "start" | "end") => {
+    date.setHours(0, 0, 0, 0);
+
+    if (type === "start") {
+      setStartDate(date);
+      onTimeFilterChange(
+        `custom&startDate=${date.toISOString()}&endDate=${endDate.toISOString()}`
+      );
+    } else {
+      setEndDate(date);
+      onTimeFilterChange(
+        `custom&startDate=${startDate.toISOString()}&endDate=${date.toISOString()}`
+      );
+    }
+  };
+
+  const minimiumEndDate = () => {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + 1);
+    return date;
   };
 
   return (
     <div className="time-filter-section">
-      <p style={{ fontWeight: "bold", color: "#CC66FF", fontSize: "1rem" }}>
+      <p style={{ fontWeight: "bold", color: "#350e5f", fontSize: "1rem" }}>
         Time Filter:
       </p>
       <div className="btn-group" role="group">
@@ -57,14 +72,16 @@ const TimeFilter = ({ onTimeFilterChange }: any) => {
         <div>
           <DatePicker
             selected={startDate}
-            onChange={(date: Date) => setStartDate(date)}
+            onChange={(date: Date) => handleCustomRange(date, "start")}
             selectsStart
+            maxDate={endDate}
           />
           <DatePicker
             selected={endDate}
-            onChange={handleCustomRange}
+            onChange={(date: Date) => handleCustomRange(date, "end")}
             selectsEnd
-            minDate={startDate}
+            minDate={minimiumEndDate()}
+            maxDate={new Date()}
           />
         </div>
       )}

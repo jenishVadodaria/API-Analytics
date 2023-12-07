@@ -62,7 +62,7 @@ export class AppService {
     return res.status(200).json({ message: 'Hello World' });
   }
 
-  async getAnalyticsData(timeRangeDto: TimeRangeDto): Promise<object> {
+  async getGraphAnalyticsData(timeRangeDto: TimeRangeDto): Promise<object> {
     const { range, startDate, endDate } = timeRangeDto;
 
     const dateFilter: Record<string, any> = {};
@@ -129,11 +129,78 @@ export class AppService {
     return { analyticsData };
   }
 
-  async getLogs(): Promise<Log[]> {
-    return this.logModel
-      .find()
+  async getLogs(
+    timeRangeDto: TimeRangeDto,
+    limit: number = 10,
+    offset: number = 0,
+  ): Promise<{ logs: Log[]; totalCount: number }> {
+    let filter = {};
+    const { range, startDate, endDate } = timeRangeDto;
+
+    if (range === 'last_24_hours') {
+      const date = new Date();
+      date.setDate(date.getDate() - 1);
+      filter = { timestamp: { $gte: date } };
+    } else if (range === 'last_7_days') {
+      const date = new Date();
+      date.setDate(date.getDate() - 7);
+      filter = { timestamp: { $gte: date } };
+    } else if (range === 'custom' && startDate && endDate) {
+      filter = {
+        timestamp: {
+          $gte: new Date(startDate),
+          $lte: new Date(endDate),
+        },
+      };
+    }
+    const logs = await this.logModel
+      .find(filter)
       .select('userId userName timestamp status errorMessage request response')
       .sort({ timestamp: -1 })
+      .limit(limit)
+      .skip(offset)
       .exec();
+
+    const totalCount = await this.logModel.countDocuments(filter);
+
+    return { logs, totalCount };
+  }
+
+  async getTotalAnalyticsData(timeRangeDto: TimeRangeDto): Promise<object> {
+    const { range, startDate, endDate } = timeRangeDto;
+
+    const dateFilter: Record<string, any> = {};
+    if (range === 'last_24_hours') {
+      dateFilter.timestamp = {
+        $gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      };
+    } else if (range === 'last_7_days') {
+      dateFilter.timestamp = {
+        $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      };
+    } else if (range === 'custom' && startDate && endDate) {
+      dateFilter.timestamp = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    const uniqueUserCount = await this.logModel
+      .distinct('userId', dateFilter)
+      .exec();
+
+    const totalCalls = await this.logModel.countDocuments(dateFilter).exec();
+
+    const totalFailures = await this.logModel
+      .countDocuments({ ...dateFilter, status: 'failure' })
+      .exec();
+
+    return {
+      analyticsData: {
+        uniqueUserCount: uniqueUserCount.length,
+        totalCalls,
+        totalFailures,
+      },
+    };
   }
 }

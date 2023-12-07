@@ -74,7 +74,7 @@ const AnalyticsGraph = ({
             <Line
               type="monotone"
               dataKey="failures"
-              stroke="#ffc658"
+              stroke="#DC143C"
               strokeWidth={2}
             />
             <CartesianGrid stroke="#ccc" />

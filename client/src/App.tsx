@@ -18,7 +18,7 @@ function App() {
         style={{
           textAlign: "center",
           fontStyle: "italic",
-          color: "#CC66FF",
+          color: "#350e5f",
         }}
         className="mb-4"
       >
@@ -32,7 +32,7 @@ function App() {
             type="button"
             onClick={handleRefresh}
           >
-            Refresh Logs
+            Refresh
           </button>
         </div>
       </div>
@@ -40,8 +40,6 @@ function App() {
       <div className=" mb-5 ">
         <AnalyticsGraphDashboard refreshSignal={refreshSignal} />
       </div>
-
-      <LogsTable refreshSignal={refreshSignal} />
     </div>
   );
 }
