@@ -23,7 +23,7 @@ const AnalyticsGraphDashboard = ({
       </div>
       <div className="d-flex flex-column-reverse flex-lg-row gap-5 ">
         <AnalyticsGraph range={timeFilter} refreshSignal={refreshSignal} />
-        <TotalCount range={timeFilter} />
+        <TotalCount range={timeFilter} refreshSignal={refreshSignal} />
       </div>
       <div className="mt-5">
         <LogsTable refreshSignal={refreshSignal} range={timeFilter} />
