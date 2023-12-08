@@ -52,16 +52,34 @@ const LogsTable = ({
   return (
     <div id="logsTable">
       {logTableData?.length === 0 ? (
-        <p
-          style={{
-            fontWeight: "bold",
-            color: "#CC66FF",
-            fontSize: "1rem",
-            textAlign: "center",
-          }}
-        >
-          Log Table will be available after you add some logs
-        </p>
+        <>
+          <table className="table">
+            <thead>
+              <tr>
+                <th className="text-center">#</th>
+                <th>User ID</th>
+                <th>Timestamp</th>
+                <th>Status</th>
+                <th>Error message</th>
+                <th>Request</th>
+                <th>Response</th>
+              </tr>
+            </thead>
+          </table>
+          <div>
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "1.2rem",
+                color: "#350e5f",
+                boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.1)",
+                padding: "15px",
+              }}
+            >
+              No Data Available
+            </p>
+          </div>
+        </>
       ) : (
         <>
           <table className="table">

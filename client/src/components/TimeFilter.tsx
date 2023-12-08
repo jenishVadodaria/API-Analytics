@@ -19,7 +19,7 @@ const TimeFilter = ({ onTimeFilterChange }: any) => {
   };
 
   const handleCustomRange = (date: Date, type: "start" | "end") => {
-    date.setHours(0, 0, 0, 0);
+    date.setHours(23, 59, 59, 999);
 
     if (type === "start") {
       setStartDate(date);
