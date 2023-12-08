@@ -21,7 +21,7 @@ export class AppService {
   ): Promise<Response> {
     try {
       const userId = createLogDto.userId;
-      const shouldFail = Math.random() < 0.9;
+      const shouldFail = Math.random() < 0.1;
 
       let user = await this.userModel.findOne({ userId });
       const { method, url, headers, body } = req;
