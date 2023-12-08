@@ -3,8 +3,10 @@ import { useState } from "react";
 import "./App.css";
 import AnalyticsGraphDashboard from "./components/AnalyticsGraphDashboard";
 import InputField from "./components/InputField";
-import LogsTable from "./components/LogsTable/LogsTable";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [refreshSignal, setRefreshSignal] = useState<boolean>(false);
@@ -40,6 +42,7 @@ function App() {
       <div className=" mb-5 ">
         <AnalyticsGraphDashboard refreshSignal={refreshSignal} />
       </div>
+      <ToastContainer position="top-right" autoClose={5000} />
     </div>
   );
 }

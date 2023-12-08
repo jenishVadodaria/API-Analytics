@@ -79,7 +79,7 @@ const LogsTable = ({
             <tbody>
               {logTableData?.map((item, index) => (
                 <tr key={item._id}>
-                  <td className="text-center">{index + 1}.</td>
+                  <td className="text-center">{page * 10 + index + 1}.</td>
                   <td>
                     <p className="logs-data p-0">{item?.userName}</p>
                   </td>
@@ -100,7 +100,7 @@ const LogsTable = ({
                     <p className="logs-data p-0">
                       {"Method: " + item?.request?.method}
                     </p>
-                    <p className="logs-data p-0">
+                    {/* <p className="logs-data p-0">
                       {"Url: " + item?.request?.url}
                     </p>
                     <p className="logs-data p-0">
@@ -108,7 +108,7 @@ const LogsTable = ({
                     </p>
                     <p className="logs-data p-0">
                       {"Headers-referer: " + item?.request?.headers.referer}
-                    </p>
+                    </p> */}
                     <p className="logs-data p-0">
                       {"Body: " + item?.request?.body.userId}
                     </p>

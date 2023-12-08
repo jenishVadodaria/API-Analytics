@@ -19,47 +19,51 @@ export class AppService {
     req: Request,
     res: Response,
   ): Promise<Response> {
-    const userId = createLogDto.userId;
-    const shouldFail = Math.random() < 0.1;
+    try {
+      const userId = createLogDto.userId;
+      const shouldFail = Math.random() < 0.9;
 
-    let user = await this.userModel.findOne({ userId });
-    const { method, url, headers, body } = req;
-    const { statusCode, statusMessage } = res;
+      let user = await this.userModel.findOne({ userId });
+      const { method, url, headers, body } = req;
+      const { statusCode, statusMessage } = res;
 
-    if (!user) {
-      user = new this.userModel({ userId });
-      await user.save();
+      if (!user) {
+        user = new this.userModel({ userId });
+        await user.save();
+      }
+
+      const userObjectId = user._id;
+      const status = shouldFail ? 'failure' : 'success';
+      const errorMessage = shouldFail ? 'API Log failure' : undefined;
+
+      const createdLog = new this.logModel({
+        userId: userObjectId,
+        userName: userId,
+        timestamp: new Date(),
+        status,
+        errorMessage,
+        request: {
+          method,
+          url,
+          headers,
+          body,
+        },
+        response: {
+          statusCode,
+          statusMessage,
+          headers: res.getHeaders(),
+        },
+      });
+      await createdLog.save();
+
+      if (shouldFail) {
+        return res.status(500).json({ message: 'Log API failure' });
+      }
+
+      return res.status(200).json({ message: 'Hello World' });
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
     }
-
-    const userObjectId = user._id;
-    const status = shouldFail ? 'failure' : 'success';
-    const errorMessage = shouldFail ? 'API Log failure' : undefined;
-
-    const createdLog = new this.logModel({
-      userId: userObjectId,
-      userName: userId,
-      timestamp: new Date(),
-      status,
-      errorMessage,
-      request: {
-        method,
-        url,
-        headers,
-        body,
-      },
-      response: {
-        statusCode,
-        statusMessage,
-        headers: res.getHeaders(),
-      },
-    });
-    await createdLog.save();
-
-    if (shouldFail) {
-      return res.status(500).json({ message: 'API failure' });
-    }
-
-    return res.status(200).json({ message: 'Hello World' });
   }
 
   async getGraphAnalyticsData(timeRangeDto: TimeRangeDto): Promise<object> {

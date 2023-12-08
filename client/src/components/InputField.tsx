@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 const API_URL = import.meta.env.VITE_BACKEND_API_BASE_URL as string;
 
 const InputField = () => {
@@ -15,13 +17,16 @@ const InputField = () => {
       const response = await axios.post(`${API_URL}log`, { userId });
 
       if (response.status === 200) {
-        window.alert("User logged successfully");
+        // window.alert("User logged successfully");
+        toast.success("User logged successfully!");
+      } else if (response.status === 400) {
+        toast.error("User ID is required");
       } else {
-        window.alert("Log API Failure");
+        toast.error("Log API Failure");
       }
       setUserId("");
-    } catch (error) {
-      window.alert("Log API Failure");
+    } catch (error: any) {
+      toast.error(error.response.data.message);
       console.error("Error logging user:", error);
       setUserId("");
     }
